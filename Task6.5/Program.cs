@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Task6._5
@@ -88,6 +88,13 @@ namespace Task6._5
             ChooseInfo();
         }
 
+        public void WriteError()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Введите корректные данные.");
+            Console.ResetColor();
+        }
+
         private void ChooseInfo()
         {
             Console.WriteLine("Выберите параметр для поиска книг: \n1.По названию книги. \n2.По автору книги. \n3.По году написания книги. \n4.По количеству листов в книге");
@@ -132,13 +139,13 @@ namespace Task6._5
         {
             for (int i = 0; i < _books.Count; i++)
                 if (_books[i].Name == word)
-                    _books[i].ShowSomeInfoInStrings(text, word);
+                   ShowSomeInfoInStrings(text, word);
         }
         private void CheckExistingInfoAuthors(string text, string word)
         {
             foreach (var book in _books)
                 if (book.Author == word)
-                    book.ShowSomeInfoInStrings(text, word);
+                    ShowSomeInfoInStrings(text, word);
         }
 
         private void CheckExistingInfoYearOfIssues(string text, string word)
@@ -147,7 +154,7 @@ namespace Task6._5
             {
                 for (int i = 0; i < _books.Count; i++)
                     if (_books[i].YearOfIssue == number)
-                        _books[i].ShowSomeInfoInStrings(text, word);
+                        ShowSomeInfoInStrings(text, word);
             }
             else
             {
@@ -160,7 +167,7 @@ namespace Task6._5
             {
                 for (int i = 0; i < _books.Count; i++)
                     if (_books[i].NumbersOfPages == number)
-                        _books[i].ShowSomeInfoInStrings(text, word);
+                        ShowSomeInfoInStrings(text, word);
             }
             else
             {
@@ -209,12 +216,14 @@ namespace Task6._5
                 WriteError();
             }
         }
-
-        public void WriteError()
+        private void ShowSomeInfoInStrings(string text, string word)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Введите корректные данные.");
-            Console.ResetColor();
+            Console.WriteLine($"{text} {word}");
+        }
+
+        private void ShowSomeInfoInNumbers(string text, int number)
+        {
+            Console.WriteLine($"{text} {number}");
         }
     }
 
@@ -237,15 +246,6 @@ namespace Task6._5
         public void ShowAllInfo()
         {
             Console.WriteLine($"Название - {Name}, автор - {Author}, год написания - {YearOfIssue}, количество страниц - {NumbersOfPages}.");
-        }
-        public void ShowSomeInfoInStrings(string text, string word)
-        {
-            Console.WriteLine($"{text} {word}");
-        }
-
-        public void ShowSomeInfoInNumbers(string text, int number)
-        {
-            Console.WriteLine($"{text} {number}");
         }
     }
 }

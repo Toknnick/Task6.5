@@ -68,7 +68,10 @@ namespace Task6._5
             }
             else
             {
-                TryDeleteBook();
+                if (TryDeleteBook() == false)
+                {
+                    WriteError();
+                }
             }
         }
 
@@ -90,9 +93,10 @@ namespace Task6._5
 
         public void WriteError()
         {
+            ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Введите корректные данные.");
-            Console.ResetColor();
+            Console.ForegroundColor = defaultColor;
         }
 
         private void ChooseInfo()
@@ -125,21 +129,28 @@ namespace Task6._5
             Console.WriteLine(text1);
             string word = Console.ReadLine();
 
-            if (userInput == "1")
-                CheckExistingInfoNames(text2, word);
-            else if (userInput == "2")
-                CheckExistingInfoAuthors(text2, word);
-            else if (userInput == "3")
-                CheckExistingInfoYearOfIssues(text2, word);
-            else
-                CheckExistingInfoNumbersOfPages(text2, word);
+            switch (userInput)
+            {
+                case "1":
+                    CheckExistingInfoNames(text2, word);
+                    break;
+                case "2":
+                    CheckExistingInfoAuthors(text2, word);
+                    break;
+                case "3":
+                    CheckExistingInfoYearOfIssues(text2, word);
+                    break;
+                case "4":
+                    CheckExistingInfoNumbersOfPages(text2, word);
+                    break;
+            }
         }
 
         private void CheckExistingInfoNames(string text, string word)
         {
             for (int i = 0; i < _books.Count; i++)
                 if (_books[i].Name == word)
-                   ShowSomeInfoInStrings(text, word);
+                    ShowSomeInfoInStrings(text, word);
         }
         private void CheckExistingInfoAuthors(string text, string word)
         {
@@ -161,6 +172,7 @@ namespace Task6._5
                 WriteError();
             }
         }
+
         private void CheckExistingInfoNumbersOfPages(string text, string word)
         {
             if (int.TryParse(word, out int number))
@@ -202,20 +214,22 @@ namespace Task6._5
             return 0;
         }
 
-        private void TryDeleteBook()
+        private bool TryDeleteBook()
         {
             Console.WriteLine("Введите порядковый номер книги:");
 
-            if (int.TryParse(Console.ReadLine(), out int numberOfBook))
+            if (int.TryParse(Console.ReadLine(), out int numberOfBook) && numberOfBook >= 0 && numberOfBook < _books.Count)
             {
                 _books.RemoveAt(numberOfBook - 1);
                 Console.WriteLine("Успешно!");
+                return true;
             }
             else
             {
-                WriteError();
+                return false;
             }
         }
+
         private void ShowSomeInfoInStrings(string text, string word)
         {
             Console.WriteLine($"{text} {word}");
@@ -241,7 +255,6 @@ namespace Task6._5
             YearOfIssue = yearOfIssue;
             NumbersOfPages = numbersOfPages;
         }
-        public Book() { }
 
         public void ShowAllInfo()
         {
